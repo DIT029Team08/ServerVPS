@@ -7,7 +7,7 @@
 
 init(Req, Opts) ->
 	{cowboy_websocket, Req, Opts},
-	SessionID = generate_session_id(),
+	SessionID = integer_to_list(rand:uniform(1000000)),
 	cowboy_req:set_resp_cookie(<<"sessionid">>, SessionID, Req,
     #{max_age => 3600}).
 
