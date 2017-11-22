@@ -14,7 +14,8 @@ start(_Type, _Args) ->
 		{'_', [
 			{"/", cowboy_static, {priv_file, websocket, "index.html"}},
 			{"/websocket", ws_handler, []},
-			{"/static/[...]", cowboy_static, {priv_dir, websocket, "static"}}
+			{"/static/[...]", cowboy_static, {priv_dir, websocket, "static"}},
+			{'_', toppage_handler, []}
 		]}
 	]),
 	{ok, _} = cowboy:start_clear(http, [{port, 8080}], #{
