@@ -6,12 +6,13 @@
 -export([websocket_info/2]).
 
 init(Req, Opts) ->
-	{cowboy_websocket, Req, Opts}.
+	{cowboy_websocket, Req, Opts},
+	SessionID = generate_session_id(),
+	cowboy_req:set_resp_cookie(<<"sessionid">>, SessionID, Req,
+    #{max_age => 3600}).
 
 websocket_init(State) ->
-	SessionID = generate_session_id(),
-	Req = cowboy_req:set_resp_cookie(<<"sessionid">>, SessionID, Req0,
-    #{max_age => 3600}),
+	erlang:start_timer(1000, self(), <<"Hello!">>),
 	{ok, State}.
 
 websocket_handle({text, Msg}, State) ->
