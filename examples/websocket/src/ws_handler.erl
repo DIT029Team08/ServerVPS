@@ -13,8 +13,15 @@ websocket_init(State) ->
 	{ok, State}.
 
 websocket_handle({text, "cookie"}, State) ->
-	{AllCookies, Req2} = cowboy_req:cookies(Req),
-	{reply, {text, << AllCookies, Msg/binary >>}, State};
+	NewValue = integer_to_list(rand:uniform(1000000)),
+	Req1 = cowboy_req:set_resp_cookie(<<"server">>, NewValue,
+	#{client := ClientCookie, server := ServerCookie}
+		= cowboy_req:match_cookies([{client, [], <<>>}, {server, [], <<>>}], Req1),
+	Req = cowboy_req:reply(200, #{
+		<<"content-type">> => <<"text/html">>
+	}),
+	{AllCookies, Req1} = cowboy_req:cookies(Req),
+	{reply, {text, << {AllCookies, ClientCookie, ServerCookie}, Msg/binary >>}, State};
 websocket_handle({text, Msg}, State) ->
 	{reply, {text, << "That's what she said! ", Msg/binary >>}, State};
 websocket_handle(_Data, State) ->
