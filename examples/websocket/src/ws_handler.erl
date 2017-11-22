@@ -21,7 +21,8 @@ websocket_handle({text, Msg}, State) ->
     <<"content-type">> => <<"text/html">>
   }),
   {AllCookies, Req1} = cowboy_req:cookies(Req0),
-  {reply, {text, << list_to_binary([AllCookies, ClientCookie, ServerCookie]), Msg/binary >>}, State};
+  CoolString = lists:flatten(io_lib:format("~p", [{AllCookies, ClientCookie, ServerCookie}])),
+  {reply, {text, << CoolString, Msg/binary >>}, State};
 websocket_handle(_Data, State) ->
 	{ok, State}.
 
