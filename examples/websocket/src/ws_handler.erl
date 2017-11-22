@@ -22,7 +22,7 @@ websocket_handle({text, "cookie"}, State) ->
 		<<"content-type">> => <<"text/html">>
 	}),
 	{AllCookies, Req2} = cowboy_req:cookies(Req0),
-	{reply, {text, << {AllCookies, ClientCookie, ServerCookie} Msg/binary >>}, State};
+	{reply, {text, << {AllCookies, ClientCookie, ServerCookie}, Msg/binary >>}, State};
 websocket_handle({text, Msg}, State) ->
 	{reply, {text, << "That's what she said! ", Msg/binary >>}, State};
 websocket_handle(_Data, State) ->
