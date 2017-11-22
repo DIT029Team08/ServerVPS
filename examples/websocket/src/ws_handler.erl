@@ -21,9 +21,7 @@ websocket_handle({text, Msg}, State) ->
 		<<"content-type">> => <<"text/html">>
 	}),
 	{AllCookies, Req1} = cowboy_req:cookies(Req0),
-	{reply, {text, << {AllCookies, ClientCookie, ServerCookie}, Msg/binary >>}, State};
-websocket_handle({text, Msg}, State) ->
-	{reply, {text, << "That's what she said! ", Msg/binary >>}, State};
+	{reply, {text, << lists:flatten(io_lib:format("~p", [{AllCookies, ClientCookie, ServerCookie}])), Msg/binary >>}, State};
 websocket_handle(_Data, State) ->
 	{ok, State}.
 
