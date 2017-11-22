@@ -13,15 +13,16 @@ websocket_init(State) ->
 	{ok, State}.
 
 websocket_handle({text, Msg}, State) ->
-	NewValue = integer_to_list(rand:uniform(1000000)),
-	Req1 = cowboy_req:set_resp_cookie(<<"server">>, NewValue),
-	#{client := ClientCookie, server := ServerCookie}
-		= cowboy_req:match_cookies([{client, [], <<>>}, {server, [], <<>>}], Req1),
-	Req0 = cowboy_req:reply(200, #{
-		<<"content-type">> => <<"text/html">>
-	}),
-	{AllCookies, Req1} = cowboy_req:cookies(Req0),
-	{reply, {text, << lists:flatten(io_lib:format("~p", [{AllCookies, ClientCookie, ServerCookie}])), Msg/binary >>}, State};
+  NewValue = integer_to_list(rand:uniform(1000000)),
+  Req1 = cowboy_req:set_resp_cookie(<<"server">>, NewValue),
+  #{client := ClientCookie, server := ServerCookie}
+    = cowboy_req:match_cookies([{client, [], <<>>}, {server, [], <<>>}], Req1),
+  Req0 = cowboy_req:reply(200, #{
+    <<"content-type">> => <<"text/html">>
+  }),
+  {AllCookies, Req1} = cowboy_req:cookies(Req0),
+  {reply, {text, << [AllCookies, ClientCookie, ServerCookie], Msg/binary >>}, State}.
+
 websocket_handle(_Data, State) ->
 	{ok, State}.
 
