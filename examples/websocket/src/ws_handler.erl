@@ -14,8 +14,7 @@ websocket_init(State) ->
 
 websocket_handle({text, "cookie"}, State) ->
 	NewValue = integer_to_list(rand:uniform(1000000)),
-	Req1 = cowboy_req:set_resp_cookie(<<"server">>, NewValue,
-	Req, #{path => <<"/">>}),
+	Req1 = cowboy_req:set_resp_cookie(<<"server">>, NewValue),
 	#{client := ClientCookie, server := ServerCookie}
 		= cowboy_req:match_cookies([{client, [], <<>>}, {server, [], <<>>}], Req1),
 	Req0 = cowboy_req:reply(200, #{
