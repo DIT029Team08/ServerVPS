@@ -1,0 +1,89 @@
+* {
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+html {
+	height: 100%;
+	background-image:
+            linear-gradient(
+            rgba(0, 0, 0, 0.1),
+            rgba(0, 0, 0, 0.2),
+            rgba(0, 0, 0, 0.5)
+            );
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+body { 
+	background-color: transparent !important;
+}
+
+.container {
+	color: white;
+}
+
+.jumbotron {
+	padding: 30%;
+	width: 50%;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 1%;
+	text-align: center;
+	background-color: rgba(51, 51, 51, 0.6) !important;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.55);
+	min-width: 200px;
+}
+
+.welcomeText {
+	background-color: rgba(51, 51, 51, 0.6);
+	width: 50%;
+	text-align: center;
+	color: #f2f2f2;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 35px;
+	border-radius: 25px;
+	text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.55);
+}
+
+.welcomeText h4 {
+	font-style: italic;
+}
+
+.fileInput {
+	border: 2px solid #bcbcbc;
+	border-top-right-radius: 20px;
+	border-bottom-right-radius: 20px;
+	display: block;
+	margin: 0 auto;
+	background-color: rgba(0, 0, 0, 0.45);
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.55);
+}
+#error {
+	font-size: 16px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	color: red;
+}
+.fileForm button{
+	display: block;
+	margin: auto;
+	padding: 5px 20px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+}
+
+.fileForm button:hover{
+	background-color: #b2b2b2;
+}
+.fileSelDiv{
+	color: black;
+	text-align: center;
+	text-shadow: 1px 1px 2px burlywood;
+}
