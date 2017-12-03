@@ -38,24 +38,47 @@ io.sockets.on('connection', function(socket) {
     //Disconnect
     socket.on('disconnect', function(socket) {
         connections.splice(connections.indexOf(socket), 1);
+        users.splice(users.indexOf(socket.username), 1);
         console.log('One Disconnected: %s sockets connected', connections.length);
+        console.log('Number of clients in chat room: ' + users.length);
         if(connections.length === 1){
             localStorage.removeItem("stringJSON");
             console.log("localStorage cleared");
         }
     });
 
-    // socket.on('send message', function(){
-    //     // io.sockets.emit('new message', {msg: data});
-    //     ;
-    // });
-
     socket.on('begin animation', function (data) {
         console.log("Users after animation started " + connections.length);
-        io.sockets.emit('begin animation', data.animator);
+        io.sockets.emit('begin animation', data.animator , stringifyArray(connections));
         // io.to(connections[0].id).emit('send message', data.animator.diagram.content[0].content[0].from.toString());
         // io.to(connections[0].id).emit('send message', data.animator.type.toString());
-    })
+    });
+
+
+    //New User
+    socket.on('new user', function(data, callback){
+        callback(true);
+        socket.username = data;
+        users.push(socket.username);
+        console.log('Number of clients in chat room: ' + users.length);
+    });
+
+    //Send Message
+    socket.on('send message', function(data){
+        io.sockets.emit('new message', {msg: data, user: socket.username});
+    });
+
+    function stringifyArray(Array) {
+        var returnString = "";
+
+        for(var i = 0; i < Array.length; i++){
+            returnString += Array[i].id;
+            if(i+1 < Array.length)
+            returnString += ",";
+        }
+        console.log(returnString);
+        return returnString;
+    }
 
 
 
