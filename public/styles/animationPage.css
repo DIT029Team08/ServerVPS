@@ -176,6 +176,13 @@ main {
     transform-origin: right center;
     animation: arrowAnim 1s ease-out;
 }
+.redText {
+    color: red;
+}
+.blackProcess {
+    background-color: #333;
+    color: white;
+}
 .messages{
     position: relative;
 }
@@ -280,9 +287,6 @@ main {
     top: 40px;
     position: relative;
     transition: all 1s ease-in;
-}
-.frameseq{
-    border-bottom: 1.5px dashed black;
 }
 .frameTitle{
     border: 1px solid;

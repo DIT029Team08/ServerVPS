@@ -15,7 +15,6 @@ const messageDivClassName = "messages";
 //const activatorClassName = "activator";
 
 var scrollBoolean = false;
-var lastScroll = 0;
 
 //var animator = JSON.parse(localStorage.getItem('stringJSON'));
 // localStorage.removeItem("stringJSON");
@@ -24,6 +23,7 @@ var log = document.getElementById("logList");
 var frameDiv;
 var llHeight = 150;
 var counter = 0;
+addColor = false;
 logCounter = 0;
 
 // Checks if it's a sequence diagram
@@ -36,51 +36,57 @@ function outputAnimation(animator, tmpSocketIds) {
         //Resets values used in the animation and clears the divs of previous content
         mainDiv.innerHTML = "";
         log.innerHTML = "";
-        lastScroll = 0;
         counter = 0;
         logCounter = 0;
+        objectIndex = 0;
+
         if (animator.type === 'sequence_diagram') {
-            scrollBoolean = true;
-            llHeight = 150;
-            //Selects the processes array in JSON File and iterates for every element
-            processDiv = document.createElement("div");
-            processDiv.className = "processDiv";
-            mainDiv.appendChild(processDiv);
-            for (var i = 0; i < animator.processes.length; i++) {
+                scrollBoolean = true;
 
-                createProcess(animator, i);
+                llHeight = 150;
+                //Selects the processes array in JSON File and iterates for every element
+                processDiv = document.createElement("div");
+                processDiv.className = "processDiv";
+                mainDiv.appendChild(processDiv);
+                for (var i = 0; i < animator.processes.length; i++) {
 
-                //Similar behavior as in the previous block, but this time the lifelines are given a unique ID, are appended to the <div> created in the previous block
-                //and the activators are appended to the lifeline divs.
+                    createProcess(animator, i);
 
-                createLifeline(animator, i);
+                    //Similar behavior as in the previous block, but this time the lifelines are given a unique ID, are appended to the <div> created in the previous block
+                    //and the activators are appended to the lifeline divs.
 
-                // var activatorDiv = document.createElement("div");
-                // activatorDiv.className = activatorClassName;
-                // lifeLineDiv.appendChild(activatorDiv);
-            }
-            /*var animatorDiagramArray = Object.keys(animator.diagram); //In order to check whether or not the JSON element is a node, we must select the diagram object's keys.
-            //if the JSON has no frame element, it will not go through the for loop as the length will be 0
-            for (var i = 0; i < animatorDiagramArray.length; i++) {   //loop through the array of Keys created above
-                if (animatorDiagramArray[i] === 'node') {             //we check wether the JSON element is a node here
-                    frameDiv = document.createElement("div");
-                    frameDiv.className = frameDivClassName;
-                    frameDiv.id = animator.diagram.node.toString();
-                    mainDiv.appendChild(frameDiv);
+                    createLifeline(animator, i);
 
-                    var frameTitle = document.createElement("div");
-                    frameTitle.className = frameTitleClassName;
-                    frameTitle.id = animator.diagram.node.toString() + "Title";
-                    frameTitle.innerHTML = animator.diagram.node.toString();
-                    frameDiv.appendChild(frameTitle);
+                    // var activatorDiv = document.createElement("div");
+                    // activatorDiv.className = activatorClassName;
+                    // lifeLineDiv.appendChild(activatorDiv);
                 }
-            }
+                /*var animatorDiagramArray = Object.keys(animator.diagram); //In order to check whether or not the JSON element is a node, we must select the diagram object's keys.
+                //if the JSON has no frame element, it will not go through the for loop as the length will be 0
+                for (var i = 0; i < animatorDiagramArray.length; i++) {   //loop through the array of Keys created above
+                    if (animatorDiagramArray[i] === 'node') {             //we check wether the JSON element is a node here
+                        frameDiv = document.createElement("div");
+                        frameDiv.className = frameDivClassName;
+                        frameDiv.id = animator.diagram.node.toString();
+                        mainDiv.appendChild(frameDiv);
+
+                        var frameTitle = document.createElement("div");
+                        frameTitle.className = frameTitleClassName;
+                        frameTitle.id = animator.diagram.node.toString() + "Title";
+                        frameTitle.innerHTML = animator.diagram.node.toString();
+                        frameDiv.appendChild(frameTitle);
+                    }
             */
             //createArrow(animator, 0, 0);
+            objectArray = [];
+            addColor = false;
+            arrowCounter = 0;
             createNodes(animator.diagram, mainDiv);
-            scrollBoolean = false;
+            setTimeout(function () {
+                scrollBoolean = false;
+                console.log(scrollBoolean);
+            }, arrowCounter * 1000);
             //createLog(animator, 0, 0, 0);
-            pageScroll();
         }
 // Checks if it's a class diagram
         if (animator.type === 'class_diagram') {
@@ -257,6 +263,12 @@ function arrowL2R(from, to, messageSent, frameToAppend) {
     var arrowLengthL2R = to.x - from.x;
     arrow.style.maxWidth = arrowLengthL2R + 'px';
 
+    if (addColor === true) {
+        console.log("GOT TRUE");
+        console.log("------------");
+        arrow.className += " redText";
+    }
+
 
     svg.setAttribute("preserveAspectRatio", "xMaxYMid slice");
     svg.setAttribute("viewBox", "0 0 1400 14");
@@ -273,7 +285,7 @@ function arrowL2R(from, to, messageSent, frameToAppend) {
     svg.appendChild(polygon);
     arrow.appendChild(svg);
     frameToAppend.appendChild(arrow);
-
+    mainDiv.scrollBy(0,document.getElementById('outputJSON').scrollHeight);
 }
 
 /*
@@ -292,6 +304,12 @@ function arrowR2L(from, to, messageSent, frameToAppend) {
     var arrowLengthR2L = from.x - to.x;
     arrow.style.maxWidth = arrowLengthR2L + 'px';
 
+     if (addColor === true) {
+         console.log("GOT TRUE");
+         console.log("------------");
+         arrow.className += " redText";
+     }
+
     svg.setAttribute("preserveAspectRatio", "xMinYMid slice");
     svg.setAttribute("viewBox", "0 0 1400 14");
     svg.setAttribute("width", "100%");
@@ -307,6 +325,7 @@ function arrowR2L(from, to, messageSent, frameToAppend) {
     svg.appendChild(polygon);
     arrow.appendChild(svg);
     frameToAppend.appendChild(arrow);
+    mainDiv.scrollBy(0,document.getElementById('outputJSON').scrollHeight);
 }
 
 
@@ -350,44 +369,7 @@ function createProcess(animator, i) {
     div = document.createElement("div");            //Creates an HTML <div> element
     div.className = processDivClassName;                //assigns it a class
 
-    if(animator.processes.length === socketIds.length){
-        div.id = socketIds[i];
-    }
 
-    else if (animator.processes.length > socketIds.length){
-        if (counter < socketIds.length){
-            div.id = socketIds[i];
-            counter++;
-        }
-        else if(i-counter === socketIds.length){
-            counter += socketIds.length;
-            div.id = socketIds[i- counter];
-        }
-        else{
-            div.id = socketIds[i - counter]
-        }
-    }
-
-    else if(animator.processes.length < socketIds.length){
-        if (counter < animator.processes.length){
-            div.id = socketIds[i];
-            counter++;
-        }
-        else{}
-    }
-    console.log("Div id: " + div.id);
-
-
-    div.innerHTML =
-        animator.processes[i].name.toString() + ": " +  //Gives it a text output as specified in the JSON file, here the class and name of the object
-        animator.processes[i].class.toString();         //here it is the class and name of the SSD object
-    mainDiv.appendChild(div);                           //Places the new <div> element under the mainDiv, as specified in the variable declaration in l.4
-
-    /** stickyProcessContainerDiv is a container div for stickyDiv. It is inside a container so we can you z-index
-     *  to hide everything behind it.
-     * stickyDiv is just the process that is made again but got position sticky so it will
-     * stick to the top of the page. No lifelines are attached to this div.
-     */
     stickyProcessContainerDiv = document.createElement("div");            //Creates an HTML <div> element
     stickyProcessContainerDiv.className = "stickyProcessContainerDiv";                //assigns it a class
 
@@ -400,6 +382,54 @@ function createProcess(animator, i) {
         animator.processes[i].name.toString() + ": " +  //Gives it a text output as specified in the JSON file, here the class and name of the object
         animator.processes[i].class.toString();         //here it is the class and name of the SSD object
     stickyProcessContainerDiv.appendChild(stickyDiv);
+
+
+
+    if(animator.processes.length === socketIds.length){
+        div.id = socketIds[i];
+        stickyDiv.id = socketIds[i];
+    }
+
+    else if (animator.processes.length > socketIds.length){
+        if (counter < socketIds.length){
+            div.id = socketIds[i];
+            stickyDiv.id = socketIds[i];
+            counter++;
+        }
+        else if(i-counter === socketIds.length){
+            counter += socketIds.length;
+            div.id = socketIds[i- counter];
+            stickyDiv.id = socketIds[i- counter];
+        }
+        else{
+            div.id = socketIds[i - counter]
+            stickyDiv.id = socketIds[i - counter]
+        }
+    }
+
+    else if(animator.processes.length < socketIds.length){
+        if (counter < animator.processes.length){
+            div.id = socketIds[i];
+            stickyDiv.id = socketIds[i];
+            counter++;
+        }
+        else{}
+    }
+    console.log("Div id: " + div.id);
+    console.log("stickyDiv id: " + stickyDiv.id);
+
+
+    div.innerHTML =
+        animator.processes[i].name.toString() + ": " +  //Gives it a text output as specified in the JSON file, here the class and name of the object
+        animator.processes[i].class.toString();         //here it is the class and name of the SSD object
+    mainDiv.appendChild(div);                           //Places the new <div> element under the mainDiv, as specified in the variable declaration in l.4
+
+    /** stickyProcessContainerDiv is a container div for stickyDiv. It is inside a container so we can you z-index
+     *  to hide everything behind it.
+     * stickyDiv is just the process that is made again but got position sticky so it will
+     * stick to the top of the page. No lifelines are attached to this div.
+     */
+
 }
 
 /*
@@ -417,23 +447,6 @@ function createLifeline(animator, i) {
 
 }
 
-function pageScroll() {
-
-    //checks if it should continue scrolling or not
-    if(scrollBoolean || lastScroll === 0){
-        // some logic to do one more iteration of this function. Overwise it will skip the last scroll of the SSD.
-        if(!scrollBoolean){
-            lastScroll++;
-        }
-        //Scrolls to the bottom of the outputJSON page
-        mainDiv.scrollBy(0,document.getElementById('outputJSON').scrollHeight); // horizontal and vertical scroll increments
-        //scrolls to the bottom of the log
-        document.getElementById('logList').scrollBy(0, document.getElementById('logList').scrollHeight);
-        setTimeout(function() {
-            pageScroll();
-        },1000); // scrolls every 1000 milliseconds
-    }
-}
 function createClass(animator, i, left, top) {
     var div = document.createElement("div");
     div.className = classesDivClassName;
@@ -501,7 +514,7 @@ function makeRelations(animator){
             makeLine(animator, i);
         }
         // If none are defined - Make both
-        else{
+        else {
             makeSuper(animator, i);
             makeSub(animator, i);
             makeLine(animator, i);
@@ -804,7 +817,10 @@ function dragElement(element) {
  *It is called recursively after each node creation and stops once the parsing is done.
  *The JSON must have at least one "send" node otherwise the function will hang
  */
+
+
 function createNodes(object, frameToAppend){
+    console.log("Wats upp boolean"+scrollBoolean);
     var arrayOfNodes = []; //this array will contain all the JSON Objects (nodes) inside object
     var arrayOfObjects = []; //this array will contain the "content" objects in the object
 
@@ -819,13 +835,17 @@ function createNodes(object, frameToAppend){
         }
     }
 
+
+
     for (var i = 0; i < arrayOfNodes.length; i++) {
         for (key in arrayOfNodes) {
             if (arrayOfNodes[i] === "seq") {
                 var seqFrameDiv = document.createElement("div");    //create frame div seqFrame
                 seqFrameDiv.className = seqFrameDivClassName;
                 frameToAppend.appendChild(seqFrameDiv);
-                // NO FRAMETITLE FOR YOUUUU
+                if(frameToAppend.className === parFrameDivClassName){
+                    seqFrameDiv.style.borderBottom = "1.5px dashed black";
+                }
                 for (var j = 0; j < arrayOfObjects.length; j++) {
                     createNodes(arrayOfObjects[j], seqFrameDiv);    //calls the function to create objects contained in seq
                 }
@@ -845,8 +865,8 @@ function createNodes(object, frameToAppend){
             else if (arrayOfNodes[i] === "send") {
                 //create arrow from "from" to "to"
                 var fromNode = getPosition(document.querySelector("#" + object.from.toString()));
-                var toNode   = getPosition(document.querySelector("#" + object.to.toString()));
-                console.log(fromNode.x + " " + toNode.x);
+                var toNode = getPosition(document.querySelector("#" + object.to.toString()));
+                //console.log(fromNode.x + " " + toNode.x);
                 var messageToSend = "";
 
                 if (object.message.length == 1) {
@@ -865,18 +885,13 @@ function createNodes(object, frameToAppend){
                         }
                     }
                 }
+                var lifelineElement = document.getElementById(object.from);
+                objectArray.push({fromNode: fromNode, toNode: toNode, messageToSend: messageToSend,
+                    frameToAppend: frameToAppend, objectFrom: object.from, lifelineElement: lifelineElement});
+                setTimeout(function () {serverRequest(); concatLog(object.from, object.to, messageToSend);}, arrowCounter * 1000);
+                arrowCounter++;
 
-                concatLog(object.from, object.to, messageToSend);
-                if (fromNode.x > toNode.x) {
-                    arrowR2L(fromNode, toNode, messageToSend, frameToAppend);
-                    incrementLifeline();
 
-                }
-                else {
-                    arrowL2R(fromNode, toNode, messageToSend, frameToAppend);
-                    incrementLifeline();
-
-                }
             }
         }
     }
