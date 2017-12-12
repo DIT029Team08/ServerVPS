@@ -1,3 +1,6 @@
+body {
+    overflow: hidden;
+}
 header {
     position: fixed;
     width:100%;
@@ -77,8 +80,18 @@ main {
     color: #f5f5f5;
     width: 15%;
     height: 50px;
-    margin-left: 54px;
-    margin-right: 54px;
+    margin-left: 50px;
+    margin-right: 50px;
+    border-radius: 5px;
+    border:  1px;
+    display: inline-block;
+}
+.processesBig {
+    color: #f5f5f5;
+    width: 10%;
+    height: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
     border-radius: 5px;
     border:  1px;
     display: inline-block;
@@ -86,7 +99,15 @@ main {
 .stickyProcessContainerDiv{
     background-color: #f5f5f5;
     z-index: 10;
-    width: calc(15% + 108px);
+    width: calc(15% + 100px);
+    height: 50px;
+    border-radius: 5px;
+    display: inline-block;
+}
+.stickyProcessContainerDivBig{
+    background-color: #f5f5f5;
+    z-index: 10;
+    width: calc(10% + 40px);
     height: 50px;
     border-radius: 5px;
     display: inline-block;
@@ -103,7 +124,162 @@ main {
     border:  1px solid black;
     padding: 10px;
     display: inline-block;
+    font-size: 100%;
 }
+@media handheld, only screen and (max-width: 767px) {
+
+    .stickyDiv {
+        background-color: #f5f5f5;
+        z-index: 10;
+        margin-left: 10%;
+        width: 80%;
+        height: 50px;
+
+        margin-right: 2.5%;
+        text-align: center;
+        border-radius: 5px;
+        border:  1px solid black;
+        padding-top: 10px;
+        padding-left: 1px;
+        display: inline-block;
+        font-size: 100%;
+    }
+
+.stickyDivBig{
+    background-color: #f5f5f5;
+    z-index: 10;
+    margin-left: 10%;
+    width: 80%;
+    height: 50px;
+
+    margin-right: 2.5%;
+    text-align: center;
+    border-radius: 5px;
+    border:  1px solid black;
+    padding-left: 1px;
+    padding-top: 10px;
+    display: inline-block;
+    font-size: 65%;
+}
+    .stickyProcessContainerDiv{
+        background-color: #f5f5f5;
+        z-index: 10;
+        width: calc(15% + 6px);
+        height: 50px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+    .stickyProcessContainerDivBig{
+        background-color: #f5f5f5;
+        z-index: 10;
+        width: calc(8% + 8px);
+        height: 50px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+    .processesBig {
+        color: #f5f5f5;
+        width: 8%;
+        height: 50px;
+        margin-left: 4px;
+        margin-right: 4px;
+        border-radius: 5px;
+        border:  1px;
+        display: inline-block;
+    }
+    .processes {
+        color: #f5f5f5;
+        width: 15%;
+        height: 50px;
+        margin-left: 3px;
+        margin-right: 3px;
+        border-radius: 5px;
+        border:  1px;
+        display: inline-block;
+    }
+}
+
+@media (min-width: 767px) and (max-width:960px) {
+    .stickyDivBig{
+        background-color: #f5f5f5;
+        z-index: 10;
+        width: 100px;
+        height: 50px;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        text-align: center;
+        border-radius: 5px;
+        border:  1px solid black;
+        padding: 10px;
+        display: inline-block;
+        font-size: 60%;
+    }
+}
+@media (max-width:1200px) and (min-width:960px){
+    .stickyDivBig{
+        background-color: #f5f5f5;
+        z-index: 10;
+        width: 125px;
+        height: 50px;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        text-align: center;
+        border-radius: 5px;
+        border:  1px solid black;
+        padding: 10px;
+        display: inline-block;
+        font-size: 70%;
+    }
+}
+@media (max-width:1450px) and (min-width:1200px){
+    .stickyDivBig{
+        background-color: #f5f5f5;
+        z-index: 10;
+        width: 150px;
+        height: 50px;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        text-align: center;
+        border-radius: 5px;
+        border:  1px solid black;
+        padding: 10px;
+        display: inline-block;
+        font-size: 80%;
+    }
+}
+@media (max-width:1710px) and (min-width:1450px){
+    .stickyDivBig{
+        background-color: #f5f5f5;
+        z-index: 10;
+        width: 175px;
+        height: 50px;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        text-align: center;
+        border-radius: 5px;
+        border:  1px solid black;
+        padding: 10px;
+        display: inline-block;
+        font-size: 90%;
+    }
+}
+@media (min-width:1710px) {
+    .stickyDivBig {
+        background-color: #f5f5f5;
+        z-index: 10;
+        width: 200px;
+        height: 50px;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        text-align: center;
+        border-radius: 5px;
+        border:  1px solid black;
+        padding: 10px;
+        display: inline-block;
+        font-size: 100%;
+    }
+}
+
 .classes {
     position: absolute;
     font-size: 15px;
@@ -173,10 +349,24 @@ main {
     transform-origin: right center;
     animation: arrowAnim 1s ease-out;
 }
+.selfCallArrow {
+    position: relative;
+    /*margin-top: 35px;*/
+    /*margin-bottom: 15px;*/
+    transform-origin: left center;
+    animation: arrowAnim 1s ease-out;
+}
+.redText {
+    color: red;
+}
+.blackProcess {
+    background-color: #333;
+    color: white;
+}
 .messages{
     position: relative;
 }
-#log {
+#logAndChat {
     z-index: 12;
     position: relative;
     margin-top: 10px;
@@ -184,17 +374,95 @@ main {
     height: 24%;
     margin-left: 20px;
     margin-right: 20px;
+}
+.logAndChatBox {
+    display: inline-block;
+    height: 100%;
+    width: 49%;
     background-color: #f5f5f5;
-    padding: 10px;
     border-radius: 5px;
     border: 1px solid #bcbcbc;
+}
+#log {
+    padding: 10px;
+}
+#chat {
+    float: right;
+}
+#nameFormArea {
+    height: 100%;
+    background-color: #333;
+    text-align: center;
+    border-radius: 5px;
+}
+#nameForm {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+}
+#nameForm label {
+    font-size: 25px;
+    color: gainsboro;
+}
+#nameForm textarea {
+    display: block;
+    resize: none;
+    height: 25px;
+    width: 100%;
+    background-color: whitesmoke;
+    border-radius: 10px;
+}
+#nameForm button {
+    display: block;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    margin-top: 10px;
+    margin-left: 35%;
+}
+#chatArea {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: none;
+}
+#messagesBox {
+    height: 85%;
+    width: 100%;
+    padding-left: 5px;
+    position: relative;
+    border-bottom: solid gray 1px;
+    overflow: auto;
+}
+#messageTextArea {
+    resize: none;
+    height: 15%;
+    width: 90%;
+    border-bottom-left-radius: 5px;
+    border: 1px solid gray;
+}
+#messageButton {
+    position: absolute;
+    height: 15%;
+    width: 10%;
+    bottom: 0px;
+    right: 0px;
+    border-bottom-right-radius: 5px;
+    background-color: #333;
+    color: white;
+}
+#logList {
+    position: relative;
+    height: 100%;
     overflow: auto;
 }
 #logList li {
     float: left;
     clear: left;
 }
-.frame {
+.framepar{
     border: 1.5px solid black;
     top: 40px;
     position: relative;
@@ -210,4 +478,9 @@ hr {
     border-top: 1.5px dashed black !important;
     margin-top: 50px !important;
     margin-bottom: 50px !important;
+}
+.deploymentBox{
+    height: 100px;
+    text-align:center;
+    box-shadow: 5px 5px #464646 inset;
 }

@@ -52,6 +52,7 @@
         }
     ],
     "diagram": {
+        "node": "seq",
         "content": [
             {
                 "node": "seq",
@@ -76,6 +77,14 @@
                         "node": "send",
                         "from": "c",
                         "to": "sa",
+                        "message": [
+                            "Remove item"
+                        ]
+                    },
+                    {
+                        "node": "send",
+                        "from": "c",
+                        "to": "ef",
                         "message": [
                             "Display Cart"
                         ]

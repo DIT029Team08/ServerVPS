@@ -17,22 +17,39 @@
                 <li><a href="#" id="restart" class="glyphicon glyphicon-play" aria-hidden="true"></a></li>
             </ul>
             <ul id="playNav">
-                <li><a href="#"><span class="sequenceDiagram" aria-hidden="true">S</span></a></li>
-                <li><a href="#"><span class="classDiagram" aria-hidden="true">C</span></a></li>
-                <li><a href="#"><span class="deploymentDiagram" aria-hidden="true">D</span></a></li>
+                <li><a href="#" id="SDbutton"><span aria-hidden="true">S</span></a></li>
+                <li><a href="#" id="CDbutton"><span aria-hidden="true">C</span></a></li>
+                <li><a href="#" id="DDbutton"><span aria-hidden="true">D</span></a></li>
             </ul>
             <ul id="helpNav">
                 <li><a  onclick="newHelpWindow()" href="#"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a></li>
             </ul>
         </nav>
     </header>
-    <main> 
+    <main>
+
         <div id="outputJSON">
             <!--<svg width="20px" height="14" preserveAspectRatio="xMaxYMid slice" viewBox="0 0 1400 14">-->
                 <!--<polygon points="1400,7 1385,1 1390,6 0,6 0,8 1390,8 1385,13 1400,7 "></polygon></svg>-->
         </div>
-        <div id="log">
-            <ul id="logList"></ul>
+        <div id="logAndChat">
+            <div class="logAndChatBox" id="log">
+                <ul id="logList"></ul>
+            </div>
+            <div class="logAndChatBox" id="chat">
+                <div id="nameFormArea">
+                    <form id="nameForm">
+                        <label>Enter username to chat</label>
+                        <textarea id="nameTextArea"></textarea>
+                        <button type="button" id="nameButton">Submit</button>
+                    </form>
+                </div>
+                <div id="chatArea">
+                    <div id="messagesBox"></div>
+                    <textarea id="messageTextArea"></textarea>
+                    <button type="button" id="messageButton">Send</button>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -42,31 +59,199 @@
     <script type="text/javascript" src="public/js/help.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        var objectIndex = 0;
+        var isSubmitter = false;
         $(function() {
-
             var socket = io.connect();
             var $restart = $('#restart');
+            var $nameForm = $('#nameForm');
+            var $nameButton = $('#nameButton');
+            var $nameFormArea = $('#nameFormArea');
+            var $nameTextArea = $('#nameTextArea');
+            var $chatArea = $('#chatArea');
+            var $messagesBox = $('#messagesBox');
+            var $messageTextArea = $('#messageTextArea');
+            var $messageButton = $('#messageButton');
+            var $SDbutton = $('#SDbutton');
+            var $CDbutton = $('#CDbutton');
+            var $DDbutton = $('#DDbutton');
+            var stringJSON;
+
+            // Check the localstorage for files - removes unused buttons
+            if(localStorage.getItem('DD') !== null){
+                stringJSON = JSON.parse(localStorage.getItem('DD'));
+            }
+            else{
+                $DDbutton.remove();
+            }
+            if(localStorage.getItem('CD') !== null){
+                stringJSON = JSON.parse(localStorage.getItem('CD'));
+            }
+            else{
+                $CDbutton.remove();
+            }
+            if(localStorage.getItem('SD') !== null){
+                stringJSON = JSON.parse(localStorage.getItem('SD'));
+            }
+            else{
+                $SDbutton.remove();
+            }
 
             $restart.click(function (e) {
                 $restart.removeClass('glyphicon glyphicon-play');
                 $restart.addClass('glyphicon glyphicon-repeat');
 
                 e.preventDefault();
-                var stringJSON = JSON.parse(localStorage.getItem('stringJSON'));
+                // var stringJSON = JSON.parse(localStorage.getItem('SD'));
+                isSubmitter = true;
                 socket.emit('begin animation', {animator: stringJSON});
-                socket.emit('send message');
             });
 
-            socket.on("begin animation", function (data) {
+            $SDbutton.click(function (e) {
+                // Check if already loaded said diagram
+                if(stringJSON.type === 'sequence_diagram'){
+                    // Do nothing
+                }
+                else {
+                    stringJSON = JSON.parse(localStorage.getItem('SD'));
+                    socket.emit('begin animation', {animator: stringJSON});
+                }
+            });
+
+            $CDbutton.click(function (e) {
+                // Check if already loaded said diagram
+                if(stringJSON.type === 'class_diagram'){
+                    // Do nothing
+                }
+                else {
+                    stringJSON = JSON.parse(localStorage.getItem('CD'));
+                    socket.emit('begin animation', {animator: stringJSON});
+                }
+            });
+
+            $DDbutton.click(function (e) {
+                // Check if already loaded said diagram
+                if(stringJSON.type === 'deployment_diagram'){
+                    // Do nothing
+                }
+                else {
+                    stringJSON = JSON.parse(localStorage.getItem('DD'));
+                    socket.emit('begin animation', {animator: stringJSON});
+                }
+            });
+
+            socket.on("begin animation", function (data, socketIds) {
                 console.log(data);
-                outputAnimation(data);
+
+                outputAnimation(data, socketIds);
             });
 
-            socket.on('send message', function (data) {
-//                socket.emit('send message', "say something");
-                console.log(data.msg);
+            $nameTextArea.keydown(function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    $nameButton.click();
+                }
             });
+
+            $nameButton.click(function (e) {
+                e.preventDefault();
+                socket.emit('new user', $nameTextArea.val(), function (data) {
+                    if (data && $nameTextArea.val() !== '') {
+                        $nameFormArea.hide();
+                        $chatArea.show();
+                    }
+                });
+                $nameButton.val('');
+            });
+
+            $messageTextArea.keydown(function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    $messageButton.click();
+                }
+            });
+
+            $messageButton.click(function (e) {
+                e.preventDefault();
+                socket.emit('send message', $messageTextArea.val());
+                $messageTextArea.val('');
+            });
+
+            socket.on('new message', function(data){
+                $messagesBox.append('<div><strong>' + data.user + '</strong>: ' + data.msg + '</div>');
+                document.getElementById('messagesBox').scrollBy(0, document.getElementById('messagesBox').scrollHeight);
+            });
+
+
+            socket.on('arrow reply', function (data) {
+                if (objectIndex === 0) {
+                    var stickyArr = document.getElementsByClassName("stickyDiv");
+                    var stickyArrBig = document.getElementsByClassName("stickyDivBig");
+                    if(stickyArr.length > 0) {
+                        for (var i = 0; i < stickyArr.length; i++) {
+                            if (socket.id === stickyArr[i].id) {
+                                stickyArr[i].className += " blackProcess";
+                                console.log("COLORING");
+                            }
+                        }
+                    }
+                    else if(stickyArrBig.length > 0){
+                        for (var i = 0; i < stickyArrBig.length; i++) {
+                            if (socket.id === stickyArrBig[i].id) {
+                                stickyArrBig[i].className += " blackProcess";
+                                console.log("COLORING");
+                            }
+                        }
+                    }
+                }
+                console.log("ANIMATING ARROW");
+                // Arrow animation
+
+                if (objectArray[objectIndex].fromNode.x === objectArray[objectIndex].toNode.x) {
+                    selfCallArrow(objectArray[objectIndex].fromNode, objectArray[objectIndex].toNode,
+                        objectArray[objectIndex].messageToSend, objectArray[objectIndex].frameToAppend);
+                    incrementLifeline(92);
+                }
+
+                else if (objectArray[objectIndex].fromNode.x > objectArray[objectIndex].toNode.x) {
+                    arrowR2L(objectArray[objectIndex].fromNode, objectArray[objectIndex].toNode,
+                        objectArray[objectIndex].messageToSend, objectArray[objectIndex].frameToAppend);
+                    incrementLifeline(75);
+                }
+                else {
+                    arrowL2R(objectArray[objectIndex].fromNode, objectArray[objectIndex].toNode,
+                        objectArray[objectIndex].messageToSend, objectArray[objectIndex].frameToAppend);
+                    incrementLifeline(75);
+                }
+
+                if (objectArray.length - 1 > objectIndex) {
+                    objectIndex++;
+                }
+                else {
+                    isSubmitter = false;
+                }
+            });
+
+            serverRequest = function serverRequest() {
+                if (isSubmitter) {
+                    console.log("REQUESTING SERVER");
+                    addColor = false;
+
+                    var $lifelineId = $('#' + objectArray[objectIndex].lifelineElement.id); // name of process is the id of lifeline
+                    var lifeLineIdNoQuery = objectArray[objectIndex].lifelineElement.id;
+                    var $processId = $lifelineId.parent().closest('div').attr('id'); // socketId is Id of process
+                    socket.emit('arrow request', {socketId: socket.id});
+                }
+            }
+
+            window.onbeforeunload = function(e) {
+                socket.disconnect();
+            };
         });
+
+//        window.addEventListener("resize", updatePosition, false);
+
+
     </script>
 </body>
 </html>
