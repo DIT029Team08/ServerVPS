@@ -50,17 +50,10 @@ function outputAnimation(animator, tmpSocketIds) {
                 processDiv.className = "processDiv";
                 mainDiv.appendChild(processDiv);
 
-<<<<<<< HEAD
             if(animator.processes.length > 9){
                                 alert("CAUTION, due to the extensive number of processes (ten or more), you may experience" +
                                     " an unstable animated output. Please return to the homepage and upload a new json file.");
                             }
-=======
-            if(animator.processes.length > 6){
-                alert("CAUTION, due to the extensive number of processes (more than six), you may experience" +
-                    " an unstable animated output. Please return to the homepage and upload a new json file.");
-            }
->>>>>>> 17be3ec241ee767fefc03ef45172028d572f0875
 
                 for (var i = 0; i < animator.processes.length; i++) {
 
@@ -106,7 +99,6 @@ function outputAnimation(animator, tmpSocketIds) {
         if (animator.type === 'class_diagram') {
             var left = 25;
             var top = 25;
-<<<<<<< HEAD
             var classBool = true;
             for (var i = 0; i < animator.classes.length; i++) {
                 createClass(animator, i, left, top);
@@ -127,12 +119,6 @@ function outputAnimation(animator, tmpSocketIds) {
                 }
                 //left = left + 400;
                 //top = top + 150;
-=======
-            for (var i = 0; i < animator.classes.length; i++) {
-                createClass(animator, i, left, top);
-                left = left + 400;
-                top = top + 150;
->>>>>>> 17be3ec241ee767fefc03ef45172028d572f0875
             }
             classLog(animator);
             makeRelations(animator);
@@ -148,7 +134,6 @@ function outputAnimation(animator, tmpSocketIds) {
                 if(mainDiv.clientWidth -400 < left && depBool){
                     depBool = false;
                     top += 150;
-<<<<<<< HEAD
                 }
                 else if(left < 150 && !depBool) {
                     top += 150;
@@ -157,16 +142,6 @@ function outputAnimation(animator, tmpSocketIds) {
                 else if (depBool) {
                     left = left + 260
                 }
-=======
-                }
-                else if(left < 150 && !depBool) {
-                    top += 150;
-                    depBool = true;
-                }
-                else if (depBool) {
-                    left = left + 260
-                }
->>>>>>> 17be3ec241ee767fefc03ef45172028d572f0875
                 else
                     left -= 260;
 
@@ -182,21 +157,13 @@ function outputAnimation(animator, tmpSocketIds) {
 * The function is set to a timeout in order to generate the arrows one by one with a timeout of one second.
 */
 
-<<<<<<< HEAD
 function incrementLifeline(extraHeight) {
-=======
-function incrementLifeline() {
->>>>>>> 17be3ec241ee767fefc03ef45172028d572f0875
 
 
     // Lifeline height
     var LifeLinesArray = document.querySelectorAll('.lifeLine');
 
-<<<<<<< HEAD
     llHeight = llHeight + extraHeight;
-=======
-    llHeight = llHeight + 75;
->>>>>>> 17be3ec241ee767fefc03ef45172028d572f0875
 
     for (var k=0; k < LifeLinesArray.length; k++) {
         LifeLinesArray[k].style.height = (llHeight + "px");
@@ -382,7 +349,6 @@ function arrowR2L(from, to, messageSent, frameToAppend) {
     arrow.appendChild(svg);
     frameToAppend.appendChild(arrow);
     mainDiv.scrollBy(0,document.getElementById('outputJSON').scrollHeight);
-<<<<<<< HEAD
 }
 
 
@@ -412,8 +378,6 @@ function selfCallArrow(from, to, messageSent, frameToAppend) {
     arrow.appendChild(svg);
     frameToAppend.appendChild(arrow);
     mainDiv.scrollBy(0,document.getElementById('outputJSON').scrollHeight);
-=======
->>>>>>> 17be3ec241ee767fefc03ef45172028d572f0875
 }
 
 
@@ -450,7 +414,6 @@ function getPosition(el) {
  * This function creates an object (process) in the SSD diagram from the list of processes in the JSON file provided.
  */
 
-<<<<<<< HEAD
 
 
 function createProcess(animator, i) {
@@ -458,18 +421,6 @@ function createProcess(animator, i) {
 
 
     div = document.createElement("div");            //Creates an HTML <div> element
-=======
-
-
-function createProcess(animator, i) {
-
-
-
-    div = document.createElement("div");            //Creates an HTML <div> element
-    div.className = processDivClassName;                //assigns it a class
-
-
->>>>>>> 17be3ec241ee767fefc03ef45172028d572f0875
     stickyProcessContainerDiv = document.createElement("div");            //Creates an HTML <div> element
     stickyDiv = document.createElement("div");            //Creates an HTML <div> element
 
@@ -591,17 +542,10 @@ function classLog(animator){
         var li = document.createElement("li");
         if(animator.relationships[i].type === 'inheritance'){
             relation = " inherits "
-<<<<<<< HEAD
         }
         else{
             relation = ""
         }
-=======
-        }
-        else{
-            relation = ""
-        }
->>>>>>> 17be3ec241ee767fefc03ef45172028d572f0875
         li.setAttribute('id',((i+1)+": " +
             animator.relationships[i].subclass.toString() +
             relation +
@@ -1014,7 +958,6 @@ function createNodes(object, frameToAppend){
 }
 
 function updatePosition() {
-<<<<<<< HEAD
 
     $(".arrowRtoL").empty();
     $(".arrowLtoR").empty();
@@ -1029,22 +972,6 @@ function updatePosition() {
         tmpArray[j].toNode = toNode;
     }
 
-=======
-
-    $(".arrowRtoL").empty();
-    $(".arrowLtoR").empty();
-
-    var tmpArray = objectArray;
-
-    var fromNode = getPosition(document.querySelector("#" + animator.diagram.from.toString()));
-    var toNode = getPosition(document.querySelector("#" + animator.diagram.to.toString()));
-
-    for(var j = 0; j < tmpArray.length; j++){
-        tmpArray[j].fromNode = fromNode;
-        tmpArray[j].toNode = toNode;
-    }
-
->>>>>>> 17be3ec241ee767fefc03ef45172028d572f0875
     for(var i = 0; i < tmpArray.length; i++){
 
         if (tmpArray[i].fromNode.x > tmpArray[i].toNode.x) {

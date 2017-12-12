@@ -151,7 +151,6 @@
                     event.preventDefault();
                     $nameButton.click();
                 }
-<<<<<<< HEAD
             });
 
             $nameButton.click(function (e) {
@@ -233,72 +232,6 @@
                 }
             });
 
-=======
-            });
-
-            $nameButton.click(function (e) {
-                e.preventDefault();
-                socket.emit('new user', $nameTextArea.val(), function (data) {
-                    if (data && $nameTextArea.val() !== '') {
-                        $nameFormArea.hide();
-                        $chatArea.show();
-                    }
-                });
-                $nameButton.val('');
-            });
-
-            $messageTextArea.keydown(function(event) {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                    $messageButton.click();
-                }
-            });
-
-            $messageButton.click(function (e) {
-                e.preventDefault();
-                socket.emit('send message', $messageTextArea.val());
-                $messageTextArea.val('');
-            });
-
-            socket.on('new message', function(data){
-                $messagesBox.append('<div><strong>' + data.user + '</strong>: ' + data.msg + '</div>');
-                document.getElementById('messagesBox').scrollBy(0, document.getElementById('messagesBox').scrollHeight);
-            });
-
-
-            socket.on('arrow reply', function (data) {
-                if (objectIndex === 0) {
-                    var stickyArr = document.getElementsByClassName("stickyDiv");
-                    for (var i = 0; i < stickyArr.length; i++) {
-                        if (socket.id === stickyArr[i].id) {
-                            stickyArr[i].className += " blackProcess";
-                            console.log("COLORING");
-                        }
-                    }
-                }
-                console.log("ANIMATING ARROW");
-                // Arrow animation
-                if (objectArray[objectIndex].fromNode.x > objectArray[objectIndex].toNode.x) {
-                    arrowR2L(objectArray[objectIndex].fromNode, objectArray[objectIndex].toNode,
-                        objectArray[objectIndex].messageToSend, objectArray[objectIndex].frameToAppend);
-                    incrementLifeline();
-
-                }
-                else {
-                    arrowL2R(objectArray[objectIndex].fromNode, objectArray[objectIndex].toNode,
-                        objectArray[objectIndex].messageToSend, objectArray[objectIndex].frameToAppend);
-                    incrementLifeline();
-                }
-
-                if (objectArray.length - 1 > objectIndex) {
-                    objectIndex++;
-                }
-                else {
-                    isSubmitter = false;
-                }
-            });
-
->>>>>>> 17be3ec241ee767fefc03ef45172028d572f0875
             serverRequest = function serverRequest() {
                 if (isSubmitter) {
                     console.log("REQUESTING SERVER");
