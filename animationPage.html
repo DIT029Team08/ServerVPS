@@ -102,7 +102,6 @@
                 $restart.addClass('glyphicon glyphicon-repeat');
 
                 e.preventDefault();
-                // var stringJSON = JSON.parse(localStorage.getItem('SD'));
                 isSubmitter = true;
                 socket.emit('begin animation', {animator: stringJSON});
             });
@@ -110,9 +109,9 @@
             $SDbutton.click(function (e) {
                 // Check if already loaded said diagram
                 if(stringJSON.type === 'sequence_diagram'){
-                    // Do nothing
                 }
                 else {
+                    isSubmitter = true;
                     stringJSON = JSON.parse(localStorage.getItem('SD'));
                     socket.emit('begin animation', {animator: stringJSON});
                 }
@@ -121,7 +120,6 @@
             $CDbutton.click(function (e) {
                 // Check if already loaded said diagram
                 if(stringJSON.type === 'class_diagram'){
-                    // Do nothing
                 }
                 else {
                     stringJSON = JSON.parse(localStorage.getItem('CD'));
@@ -234,24 +232,17 @@
 
             serverRequest = function serverRequest() {
                 if (isSubmitter) {
-                    console.log("REQUESTING SERVER");
-                    addColor = false;
-
                     var $lifelineId = $('#' + objectArray[objectIndex].lifelineElement.id); // name of process is the id of lifeline
                     var lifeLineIdNoQuery = objectArray[objectIndex].lifelineElement.id;
                     var $processId = $lifelineId.parent().closest('div').attr('id'); // socketId is Id of process
                     socket.emit('arrow request', {socketId: socket.id});
                 }
-            }
+            };
 
             window.onbeforeunload = function(e) {
                 socket.disconnect();
             };
         });
-
-//        window.addEventListener("resize", updatePosition, false);
-
-
     </script>
 </body>
 </html>

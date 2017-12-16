@@ -5,7 +5,7 @@ window.onload = function() {
     var regTypesAllowed =  /(.*?)\.(json|JSON)$/;
     var textVersion = [];
     var jsonVersion = [];
-    message.style.opacity = 0;
+    // message.style.opacity = 0;
 
     if (fileInput) {
         fileInput.addEventListener('change', function(e) {
@@ -148,7 +148,7 @@ function addToStorage(textVersion, jsonVersion) {
                 localStorage.setItem('DD', textVersion[n]);
                 break;
             default:
-                alert("EVERYTHING IS BAD");
+                alert("No Diagram Found");
         }
     }
 }
